@@ -142,6 +142,8 @@ namespace TargetUI
             tm.Prizes = selectedPrizes;
             tm.EnteredTeams = selectedTeams;
 
+            //Wire the matchups
+            TournamentLogic.CreateRounds(tm);
                      
             GlobalConfig.Connection.CreateTournament(tm);
 
