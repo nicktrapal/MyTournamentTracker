@@ -129,22 +129,21 @@ namespace TargetUI
 
         private void createTournamentButton_Click(object sender, EventArgs e)
         {
-            //Validate data
-            if (!ValidateForm())
+            
+            if (!ValidateForm()) //Validate data
                 return;
-            //Create Tournament model
-            TournamentModel tm = new TournamentModel();
+            
+            TournamentModel tm = new TournamentModel(); //Create Tournament model
             tm.TournamentName = tournamentNameValue.Text;
             tm.EntryFee = decimal.Parse(entryFeeValue.Text);
 
-            //Create all of the prizes entries
-            //Create all of team entries
-            tm.Prizes = selectedPrizes;
-            tm.EnteredTeams = selectedTeams;
+            
+            
+            tm.Prizes = selectedPrizes; //Create all of the prizes entries
+            tm.EnteredTeams = selectedTeams; //Create all of team entries
 
-            //Wire the matchups
-            TournamentLogic.CreateRounds(tm);
-                     
+            TournamentLogic.CreateRounds(tm); //Wire the matchups
+
             GlobalConfig.Connection.CreateTournament(tm);
 
             

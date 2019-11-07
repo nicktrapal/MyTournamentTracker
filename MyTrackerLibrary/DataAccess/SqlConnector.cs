@@ -108,9 +108,11 @@ namespace MyTrackerLibrary.DataAccess
 
                 SaveTournament(connection, model);
 
-                SavePrizes(connection, model);
+                SaveTournamentPrizes(connection, model);
 
-                SaveEntries(connection, model);
+                SaveTournamentEntries(connection, model);
+
+                SaveTournamentRounds(connection, model);
 
             }
 
@@ -121,7 +123,7 @@ namespace MyTrackerLibrary.DataAccess
             var t = new DynamicParameters();
             t.Add("@TournamentName", model.TournamentName);
             t.Add("@EntryFee", model.EntryFee);
-            t.Add("@id", 0, dbType: DbType.Int32, direction: ParameterDirection.Output);
+            t.Add("@Id", 0, dbType: DbType.Int32, direction: ParameterDirection.Output);
 
             connection.Execute("dbo.spTournaments_Insert", t, commandType: CommandType.StoredProcedure);
 
@@ -130,7 +132,7 @@ namespace MyTrackerLibrary.DataAccess
 
         }
 
-        private void SavePrizes(IDbConnection connection, TournamentModel model)
+        private void SaveTournamentPrizes(IDbConnection connection, TournamentModel model)
         {
             foreach (PrizeModel pz in model.Prizes)
             {
@@ -140,11 +142,12 @@ namespace MyTrackerLibrary.DataAccess
                 t.Add("@Id", 0, dbType: DbType.Int32, direction: ParameterDirection.Output);
 
                 connection.Execute("dbo.spTournamentPrizes_Insert", t, commandType: CommandType.StoredProcedure);
+
             }
 
         }
 
-        private void SaveEntries(IDbConnection connection, TournamentModel model)
+        private void SaveTournamentEntries(IDbConnection connection, TournamentModel model)
         {
             foreach (TeamModel tm in model.EnteredTeams)
             {
@@ -158,7 +161,55 @@ namespace MyTrackerLibrary.DataAccess
 
         }
 
-            public List<PersonModel> GetPerson_All()
+        /// <summary>
+        /// Saves all the tournament information to the database.
+        /// </summary>
+        /// <param name="connection"></param>
+        /// <param name="model"></param>
+        private void SaveTournamentRounds(IDbConnection connection, TournamentModel model)
+        {
+                
+
+                foreach ( List<MatchupModel> round in model.Rounds) // goes through each round
+                {
+                    foreach(MatchupModel matchup in round) //saving all the matchups
+                    {
+                        
+                        var t = new DynamicParameters();                         
+                        t.Add("@Tournament_Id", model.Id);
+                        t.Add("@MatchupRound", matchup.MatchupRound);
+                        t.Add("@Id", 0, dbType: DbType.Int32, direction: ParameterDirection.Output);
+
+                        connection.Execute("dbo.spMatchups_Insert", t, commandType: CommandType.StoredProcedure);
+
+                        matchup.Id = t.Get<int>("@Id");
+
+                        foreach (MatchupEntryModel entry in matchup.Entries) //saving the entries for each matchup
+                        {
+                            t = new DynamicParameters();
+                            t.Add("@Matchup_Id", matchup.Id);
+                            if (entry.ParentMatchup==null)
+                                t.Add("@ParentMatchup_Id", null);
+                            else
+                                t.Add("@ParentMatchup_Id",entry.ParentMatchup.Id);
+                            if (entry.TeamCompeting == null)
+                                t.Add("@TeamCompeting_Id", null);
+                            else
+                                t.Add("@TeamCompeting_Id", entry.TeamCompeting.Id);
+                            t.Add("@Id", 0, dbType: DbType.Int32, direction: ParameterDirection.Output);
+
+                            entry.Id = t.Get<int>("@Id");//not needed
+
+                            connection.Execute("dbo.spMatchupEntries_Insert", t, commandType: CommandType.StoredProcedure);
+                        }
+
+                        
+                    }
+                }
+
+        }
+
+        public List<PersonModel> GetPerson_All()
         {
             List<PersonModel> output;
             using (IDbConnection connection = new System.Data.SqlClient.SqlConnection(GlobalConfig.CnnString(db)))
