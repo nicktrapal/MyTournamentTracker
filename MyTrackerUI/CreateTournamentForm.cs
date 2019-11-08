@@ -46,6 +46,20 @@ namespace TargetUI
         {
             decimal fee = 0;
 
+            if (tournamentNameValue.Text.Length==0)
+            {
+                MessageBox.Show("You need to enter a valid Tournament Name",
+                    "Invalid Name", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            if (tournamentTeamsListBox.Items.Count <= 1)
+            {
+                MessageBox.Show("You need to enter at least 2 teams to the tournament",
+                    "Not enough teams", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
             bool feeAcceptable = decimal.TryParse(entryFeeValue.Text, out fee);
 
             if (!feeAcceptable)
