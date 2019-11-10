@@ -11,6 +11,10 @@ namespace MyTrackerLibrary.Models
         /// </summary>
         public int Id { get; set; }
         /// <summary>
+        /// The ID that will be used to identify the competing team
+        /// </summary>
+        public int TeamCompeting_Id { get; set; }
+        /// <summary>
         /// Represents one team in the matchup.
         /// </summary>
         public TeamModel TeamCompeting { get; set; }
@@ -18,6 +22,10 @@ namespace MyTrackerLibrary.Models
         /// Represents the score for the particular team.
         /// </summary>
         public double Score { get; set; }
+        /// <summary>
+        /// The ID that will be used to identify the parent matchup.
+        /// </summary>
+        public int ParentMatchup_Id { get; set; }
         /// <summary>
         /// Represents the matchup that this team came from as the winner.
         /// </summary>
