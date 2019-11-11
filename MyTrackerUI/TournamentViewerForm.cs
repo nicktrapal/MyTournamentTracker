@@ -234,6 +234,24 @@ namespace TargetUI
             else
                 MessageBox.Show("It's a draw (We don't handle draws)");
 
+            //TODO when you score stay to the same matchup
+            foreach(List <MatchupModel> round in tournament.Rounds)
+            {
+                foreach (MatchupModel matchup in round)
+                {
+                    foreach(MatchupEntryModel entry in matchup.Entries)
+                    {
+                        if (entry.ParentMatchup != null)
+                        {
+                            if (entry.ParentMatchup.Id == m.Id)
+                            {
+                                entry.TeamCompeting = m.Winner;
+                                GlobalConfig.Connection.UpdateMatchup(matchup);
+                            }
+                        }
+                    }
+                }
+            }
             LoadMatchups();
             WireUpMatchupsLists();
 
