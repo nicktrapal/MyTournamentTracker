@@ -98,6 +98,9 @@
     <EmbeddedResource Include="TournamentDashboardForm.resx">
       <DependentUpon>TournamentDashboardForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="TournamentViewerForm.resx">
+      <DependentUpon>TournamentViewerForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

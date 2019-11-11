@@ -26,5 +26,32 @@ namespace MyTrackerLibrary.Models
         /// Represents the round that this matchup is in.
         /// </summary>
         public int MatchupRound { get; set; }
+
+        public string DisplayName
+        {
+            get
+            {
+                string output = "";
+
+                foreach (MatchupEntryModel e in Entries)
+                {
+                    if (e.TeamCompeting != null)
+                    {
+                        if (output.Length == 0)
+                            output = e.TeamCompeting.Team_Name;
+                        else
+                            output += $" vs. {e.TeamCompeting.Team_Name}";
+                    }
+                    else
+                    {
+                        output = "Matchup not yet determined.";
+                        break;
+                    }
+
+                }
+
+                return output;
+            }
+        }
     }
 }

@@ -31,5 +31,12 @@ namespace TargetUI
             CreateTournamentForm form = new CreateTournamentForm();
             form.Show();
         }
+
+        private void loadTournamentButton_Click(object sender, EventArgs e)
+        {
+            TournamentModel selected_tourn = (TournamentModel)loadExistingTournamentDropDown.SelectedItem;
+            TournamentViewerForm form = new TournamentViewerForm(selected_tourn);
+            form.Show();
+        }
     }
 }
