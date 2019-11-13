@@ -121,9 +121,13 @@ namespace MyTrackerLibrary.DataAccess
 
                 SaveTournamentRounds(connection, model);
 
-                TournamentLogic.UpdateTournamentResults(model);
+                
 
             }
+
+            TournamentLogic.UpdateTournamentResults(model);
+
+
 
         }
         /// <summary>
@@ -219,11 +223,11 @@ namespace MyTrackerLibrary.DataAccess
                             else
                                 t.Add("@TeamCompeting_Id", entry.TeamCompeting.Id);
                             t.Add("@Id", 0, dbType: DbType.Int32, direction: ParameterDirection.Output);
-
-                            entry.Id = t.Get<int>("@Id");//not needed
-
+                           
                             connection.Execute("dbo.spMatchupEntries_Insert", t, commandType: CommandType.StoredProcedure);
-                        }
+
+                            entry.Id = t.Get<int>("@Id");
+                    }
 
                         
                     }

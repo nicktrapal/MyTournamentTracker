@@ -225,8 +225,14 @@ namespace TargetUI
 
             }
 
-
-            TournamentLogic.UpdateTournamentResults(tournament);
+            try
+            {
+                TournamentLogic.UpdateTournamentResults(tournament);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show($"The application had the following error: {ex.Message}");
+            }
 
             LoadMatchups();
             WireUpMatchupsLists();
