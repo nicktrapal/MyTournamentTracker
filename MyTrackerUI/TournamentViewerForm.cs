@@ -56,7 +56,7 @@ namespace TargetUI
             {
                 matchupListBox.DataSource = selectedMatchups;
                 matchupListBox.DisplayMember = "DisplayName";
-                matchupListBox.SelectedIndex = 0;
+               
             }
         }
 
@@ -84,6 +84,8 @@ namespace TargetUI
         {
             LoadMatchups();
             WireUpMatchupsLists();
+            if (selectedMatchups.Count > 0) //reset which matchup is selected
+                matchupListBox.SelectedIndex = 0;
         }
 
         private void LoadMatchups()
@@ -176,6 +178,8 @@ namespace TargetUI
         {
             LoadMatchups();
             WireUpMatchupsLists();
+            if (selectedMatchups.Count > 0)
+                matchupListBox.SelectedIndex = 0;
         }
 
         private void scoreButton_Click(object sender, EventArgs e)
@@ -209,7 +213,7 @@ namespace TargetUI
                     {
                         bool scoreValid = double.TryParse(teamTwoScoreValue.Text, out teamTwoScore);
                         if (scoreValid)
-                            m.Entries[0].Score = teamTwoScore;
+                            m.Entries[1].Score = teamTwoScore;
                         else
                         {
                             MessageBox.Show("Please enter a valid score for team 2.");
@@ -221,41 +225,14 @@ namespace TargetUI
 
             }
 
-            if (teamOneScore > teamTwoScore) //team one wins
-            {
-                m.Winner = m.Entries[0].TeamCompeting;
-                m.Winner_Id = m.Winner.Id;
-            }
-            else if (teamTwoScore > teamOneScore)
-            {
-                m.Winner = m.Entries[1].TeamCompeting;
-                m.Winner_Id = m.Winner.Id;
-            }
-            else
-                MessageBox.Show("It's a draw (We don't handle draws)");
 
-            //TODO when you score stay to the same matchup
-            foreach(List <MatchupModel> round in tournament.Rounds)
-            {
-                foreach (MatchupModel matchup in round)
-                {
-                    foreach(MatchupEntryModel entry in matchup.Entries)
-                    {
-                        if (entry.ParentMatchup != null)
-                        {
-                            if (entry.ParentMatchup.Id == m.Id)
-                            {
-                                entry.TeamCompeting = m.Winner;
-                                GlobalConfig.Connection.UpdateMatchup(matchup);
-                            }
-                        }
-                    }
-                }
-            }
+            TournamentLogic.UpdateTournamentResults(tournament);
+
             LoadMatchups();
             WireUpMatchupsLists();
+     
 
-            GlobalConfig.Connection.UpdateMatchup(m);
+          
         }
     }
 }

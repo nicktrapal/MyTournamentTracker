@@ -40,7 +40,7 @@ namespace TargetUI
             {
                 PersonModel person = new PersonModel(firstNameValue.Text,lastNameValue.Text,emailValue.Text,cellphoneValue.Text);
 
-                person=GlobalConfig.Connection.CreatePerson(person);
+                GlobalConfig.Connection.CreatePerson(person);
 
                 selectedTeamMembers.Add(person);
                 WireUpLists();

@@ -8,11 +8,11 @@ namespace MyTrackerLibrary.DataAccess
     public interface IDataConnection
     {
 
-        PrizeModel CreatePrize(PrizeModel model);
-        
-        PersonModel CreatePerson(PersonModel model);
+        void CreatePrize(PrizeModel model);
 
-        TeamModel CreateTeam(TeamModel model);
+        void CreatePerson(PersonModel model);
+
+        void CreateTeam(TeamModel model);
 
         void CreateTournament(TournamentModel model);
 

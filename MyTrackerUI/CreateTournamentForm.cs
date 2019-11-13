@@ -159,8 +159,12 @@ namespace TargetUI
             TournamentLogic.CreateRounds(tm); //Wire the matchups
 
             GlobalConfig.Connection.CreateTournament(tm);
+          
+            TournamentViewerForm form = new TournamentViewerForm(tm);
+            form.Show();
+            this.Close();
 
-            
+
         }
     }
 }
